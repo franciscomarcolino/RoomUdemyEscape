@@ -19,6 +19,8 @@ void UGrabber::BeginPlay()
 	FindPhysicsHandleComponent();
 	SetupInputComponent();	
 
+
+
 }
 
 // Called every frame
@@ -31,6 +33,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	FVector LineTraceEnd = GetLineTraceEnd(GetPlayerLocationRotation());
 
+	if (!PhysicsHandleComponent) { return; }
 	//if Physics handle is attached
 	if (PhysicsHandleComponent->GrabbedComponent)
 	{
@@ -45,13 +48,13 @@ void UGrabber::FindPhysicsHandleComponent()
 {
 	PhysicsHandleComponent = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 
-	if (PhysicsHandleComponent)
+	if (PhysicsHandleComponent != nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The actor %s does have a PhysicsHandleComponent. "), *(GetOwner()->GetName()));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("The actor %s does not have a PhysicsHandleComponent. "), *(GetOwner()->GetName()));
+		UE_LOG(LogTemp, Error, TEXT("The actor %s does not have a PhysicsHandleComponent. "), *(GetOwner()->GetName()));		
 	}
 }
 
@@ -73,6 +76,7 @@ void UGrabber::SetupInputComponent()
 	{
 		//Log if the Owner does not have a input component
 		UE_LOG(LogTemp, Error, TEXT("The actor %s does not have a UInputComponent. "), *(GetOwner()->GetName()));
+		return;
 	}
 }
 
@@ -119,9 +123,11 @@ void UGrabber::Grab()
 	auto ComponentToGrab = HitResult.GetComponent();
 	auto ActorHit = HitResult.GetActor();
 
+	
 	//Attach only if we hit a valid actor
 	if (ActorHit != nullptr)
 	{
+		if (!PhysicsHandleComponent) { return; }
 		PhysicsHandleComponent->GrabComponent(ComponentToGrab, NAME_None, ActorHit->GetActorLocation(), true);
 	}
 }
@@ -129,6 +135,7 @@ void UGrabber::Grab()
 //Function used to release the objects
 void UGrabber::Release()
 {
+	if (!PhysicsHandleComponent) { return; }
 	PhysicsHandleComponent->ReleaseComponent();
 	UE_LOG(LogTemp, Warning, TEXT("Grab Key released. "));
 }

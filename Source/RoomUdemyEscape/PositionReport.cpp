@@ -19,7 +19,7 @@ UPositionReport::UPositionReport()
 void UPositionReport::BeginPlay()
 {
 	Super::BeginPlay();	
-	
+		
 	FString ObjectName = GetOwner()->GetName();
 	FString ObjectPos = GetOwner()->GetActorLocation().ToString();
 	

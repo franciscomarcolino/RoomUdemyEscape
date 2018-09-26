@@ -11,6 +11,8 @@
 #include "OpenDoor.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDoorEvent);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ROOMUDEMYESCAPE_API UOpenDoor : public UActorComponent
 {
@@ -23,10 +25,10 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	
+	/*void OpenDoor();
 
-	void OpenDoor();
-
-	void CloseDoor();
+	void CloseDoor();*/
 
 	float GetTotalMassOfActorsOnPlate();
 
@@ -34,26 +36,30 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnOpen;
+
+	UPROPERTY(BlueprintAssignable)
+	FDoorEvent OnClose;
+
 private:
 
-	UPROPERTY(VisibleAnyWhere)
-	float DoorOpenAngle = -90.0f;
+	//UPROPERTY(VisibleAnyWhere)
+	//float DoorOpenAngle = -90.0f;
 
-	UPROPERTY(VisibleAnyWhere)
-	float DoorCloseAngle = 0.0f;
+	//UPROPERTY(VisibleAnyWhere)
+	//float DoorCloseAngle = 0.0f;
 
-	UPROPERTY(VisibleAnyWhere)
-	bool AvaiableToOpen = true;
+	//UPROPERTY(VisibleAnyWhere)
+	//bool AvaiableToOpen = true;
 
-	UPROPERTY(VisibleAnyWhere)
-	float DoorCloseDelay = 0.5f;
+	//UPROPERTY(VisibleAnyWhere)
+	//float DoorCloseDelay = 0.5f;
 
-	UPROPERTY(VisibleAnyWhere)
-	float LastDoorOpenTime;
-	float OpenThresholdMass = 40.0f;
+	UPROPERTY(EditableAnyWhere)
+	/*float LastDoorOpenTime = 0.0f;*/
+	float OpenThresholdMass = 10.0f;
 
 	UPROPERTY(EditAnyWhere)
-	ATriggerVolume* PressurePlate;
-
-
+	ATriggerVolume* PressurePlate = nullptr;
 };

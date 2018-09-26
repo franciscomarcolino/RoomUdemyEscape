@@ -11,6 +11,8 @@
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
 #include "Grabber.generated.h"
 
+//TODO Proteger todos os ponteiros
+
 struct PlayerLocationRotation
 {
 	FVector PlayerViewpointLocation;

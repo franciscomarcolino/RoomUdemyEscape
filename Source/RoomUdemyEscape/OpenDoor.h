@@ -26,10 +26,6 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
-	/*void OpenDoor();
-
-	void CloseDoor();*/
-
 	float GetTotalMassOfActorsOnPlate();
 
 public:	
@@ -43,21 +39,8 @@ public:
 	FDoorEvent OnClose;
 
 private:
-
-	//UPROPERTY(VisibleAnyWhere)
-	//float DoorOpenAngle = -90.0f;
-
-	//UPROPERTY(VisibleAnyWhere)
-	//float DoorCloseAngle = 0.0f;
-
-	//UPROPERTY(VisibleAnyWhere)
-	//bool AvaiableToOpen = true;
-
-	//UPROPERTY(VisibleAnyWhere)
-	//float DoorCloseDelay = 0.5f;
-
-	UPROPERTY(EditableAnyWhere)
-	/*float LastDoorOpenTime = 0.0f;*/
+	
+	UPROPERTY(EditAnyWhere)
 	float OpenThresholdMass = 10.0f;
 
 	UPROPERTY(EditAnyWhere)

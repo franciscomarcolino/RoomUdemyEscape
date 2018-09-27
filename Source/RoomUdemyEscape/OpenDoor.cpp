@@ -30,54 +30,20 @@ void UOpenDoor::BeginPlay()
 	return;
 }
 
-void UOpenDoor::OpenDoor()
-{
-	////// Find the owning actor
-	//AActor* Owner = GetOwner();
-
-	//if (!Owner) { return; }
-	////// Set the new rotation
-	//Owner->SetActorRotation(FRotator(0.0f, DoorOpenAngle, 0.0f));
-
-	/*OnOpenRequest.Broadcast();*/
-
-	//UE_LOG(LogTemp, Error, TEXT("Passou!"));
-
-	return;	
-}
-
-void UOpenDoor::CloseDoor()
-{
-	//// Find the owning actor
-	//AActor* Owner = GetOwner();
-	//if (!Owner) { return; }
-	//// Set the new rotation
-	//Owner->SetActorRotation(FRotator(0.0f, DoorCloseAngle, 0.0f));
-
-
-
-	return;
-}
-
 
 // Called every frame
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Poll the trigger every frame
-	if ( GetTotalMassOfActorsOnPlate() > OpenThresholdMass)
-	{	
 	// If the total mass of actor is greater than the value, the door opens		
-		OnOpenRequest.Broadcast();
-		/*AvaiableToOpen = false;
-		LastDoorOpenTime = GetWorld()->GetTimeSeconds();*/
+	if ( GetTotalMassOfActorsOnPlate() > OpenThresholdMass)
+	{		
+		OnOpen.Broadcast();
 	}	
-	else /*if ( (GetWorld()->GetTimeSeconds() - LastDoorOpenTime) > DoorCloseDelay)*/
+	else
 	{
-		FOnCloseRequest.Broadcast();
-		/*CloseDoor();*/
-		/*AvaiableToOpen = true;*/
+		OnClose.Broadcast();	
 	}
 
 	return;
@@ -93,13 +59,13 @@ float UOpenDoor::GetTotalMassOfActorsOnPlate()
 
 	if (PressurePlate == nullptr) 
 	{
-		UE_LOG(LogTemp, Error, TEXT("No mass"));
+		UE_LOG(LogTemp, Error, TEXT("No pressure plate."));
 		return 0.0f; 
 	}
+
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
 
 	// Iterate to sum the masses
-
 	for (auto* Actor : OverlappingActors)
 	{ 	
 		UE_LOG(LogTemp, Warning, TEXT("Object overlaping now: %s "), *(Actor->GetName()));
